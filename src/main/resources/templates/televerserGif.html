@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Placer un gif distant</title>
+    <link th:href="@{'/style/commun.css'}" rel="stylesheet">
+    <!--	On importe le style correspondant au thème choisi par l'utilisateur -->
+    <link th:href="@{'/style/' +${session?.utilisateur?.theme?.nom?.toLowerCase()}+'.css'}" rel="stylesheet">
+</head>
+
+<body>
+    <!--	Le fragment Thymeleaf ci-dessous  affiche la bannière du site -->
+	<div th:insert="header.html :: header_body"></div>
+    <h2 th:text="'Televerse un gif sur le' + ${#temporals.format(idJour, 'dd MMMM yyyy')} + '(nombre de points: ' +${session?.utilisateur?.nbPoints}+ ')'">
+    </h2>
+    <!-- Formulaire Thymeleaf pour téléverser un fichier 
+         Le th:action renvoie à la méthode annotée @PostMapping("televerserGif") du controleur
+         Le enctype précise qu'on envoie un fichier
+
+    -->
+    <form th:action="@{televerserGif}" method="post" enctype="multipart/form-data">
+        <input type="file" name="FICHIER" accept="gif" class="form-control-file">
+        <!-- Champ caché pour transmettre des données 
+             qui sont nécessaires pour la suite de l'opération,
+             mais que l'utilisateur n'a pas à retaper par ce qu'elles sont
+             déjà connues.
+           
+        -->
+        <!-- Le ID_JOUR sera un paramètre GET dans l'URL, affecté de la valeur 
+             de idJour dans th:value  -->
+        <input type="hidden" th:value="${idJour}" name="ID_JOUR" /><br>
+        <button type="submit">Placer</button>
+    </form>
+</body>

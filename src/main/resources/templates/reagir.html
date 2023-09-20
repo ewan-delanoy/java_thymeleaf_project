@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Reagir</title>
+<!--	On importe le style correspondant au thème choisi par l'utilisateur -->
+<link th:href="@{'/style/commun.css'}" rel="stylesheet">
+<link th:href="@{'/style/' + ${session?.utilisateur?.theme?.nom?.toLowerCase()} + '.css'}" rel="stylesheet">
+</head>
+<body>
+<div th:insert="header.html :: header_body"></div>
+<div class="gifContainer">
+<img th:if="${gif?.getClass().simpleName == 'GifDistant'}" th:src="@{${gif.url}}" height="200">
+<img th:if="${gif?.getClass().simpleName == 'GifTeleverse'}" th:src="@{'/images/' + ${gif.id} + '.gif'}" height="200">
+</div>
+
+<h2>Réagir au Gif</h2>
+
+<th:block th:each="emotion:${emotions}">
+        <div class="emotionContainer">
+            <a th:href="@{'enregistrerReaction?ID_GIF=' + ${gif.id} + '&ID_EMOTION=' + ${emotion?.id} }">
+                <span class="emotion" th:utext="${emotion?.code}"></span>
+            </a>
+        </div>
+    </th:block>
+</form>
+</body>
+</html>

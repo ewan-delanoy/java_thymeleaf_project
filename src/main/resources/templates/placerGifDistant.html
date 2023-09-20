@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Placer un gif distant</title>
+    <link th:href="@{'/style/commun.css'}" rel="stylesheet">
+    <link th:href="@{'/style/' +${session.utilisateur.theme.nom.toLowerCase()}+'.css'}" rel="stylesheet">
+</head>
+<body>
+    <!--	Le fragment Thymeleaf ci-dessous  affiche la bannière du site -->
+    <div th:insert="header.html :: header_body"></div>
+    <h2 th:text="'Placer un gif distant sur le ' + ${#temporals.format(gifDistant.jour.date, 'dd MMMM yyyy')} + '(nombre de points: ' +${gifDistant.jour.nbPoints}+ ')'"></h2>
+    <div class="formContainer">
+    <form class="blue-form" th:object="${gifDistant}" th:action="@{placerGifDistant}" method="post">
+        <label>URL</label>
+        <input type="text" th:field="*{url}" placeHolder="https://media.giphy.com/media/l4FGoECUgPTkFX7La/giphy.gif" />
+         <!-- Champ caché pour transmettre des données 
+             qui sont nécessaires pour la suite de l'opération,
+             mais que l'utilisateur n'a pas à retaper par ce qu'elles sont
+             déjà connues.
+        -->
+        <input type="hidden" th:field="*{jour.date}" /><br>
+        <input type="hidden" th:field="*{utilisateur.prenom}" /><br>
+        <label>Légende</label>
+        <input type="text" th:field="*{legende}" /><br>
+        <button type="submit">Placer</button>
+    </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link th:href="@{'/style/commun.css'}" rel="stylesheet">
+<title>Inscription</title>
+</head>
+<body>
+    <!-- Le fragment Thymeleaf ci-dessous  importe la bannière du site 
+    et montre les éventuelles notifications
+    -->
+    <div th:insert="header.html :: header_body"></div>
+    <div class="fondCyan"></div>
+    <div class="formContainer">
+    <!-- Formulaire utilisant Thymeleaf 
+         th:object pour le "model attribute" dans le controleur
+         th:action renvoie vers le @PostMapping("inscription") du controleur         
+    -->
+
+        <form class="blue-form" th:action="@{/inscription}" th:object="${utilisateur}"  method="post">
+
+          <!-- 
+         th:field pour lier un input donné à un attribut de l'objet à remplir
+         th:errors pour afficher les éventuelles erreurs        
+    -->  
+    <input type="text" th:field="*{nom}" placeholder="nom"/><br>
+    <p class="erreur" th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></p>
+
+    
+    <input type="text" th:field="*{prenom}" placeholder="prenom"/><br>
+    <p class="erreur" th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}"></p>
+
+    <input type="email" th:field="*{email}" placeholder="email"/><br>
+    <p class="erreur" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+
+    <input type="password" th:field="*{motDePasse}" placeholder="mot de passe"/><br>
+    <p class="erreur" th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}"></p>
+
+    <select th:field="*{theme}">
+        <option value="0">Merci de choisir un thème</option>
+        <option th:each="theme:${themes}" th:value="${theme.id}" th:text="${theme.nom}" />
+    </select>
+    <p class="erreur" th:if="${#fields.hasErrors('theme')}" th:errors="*{theme}"></p>
+<button type="submit">Inscription</button>
+</form>
+</div>
+</body>
+</html>

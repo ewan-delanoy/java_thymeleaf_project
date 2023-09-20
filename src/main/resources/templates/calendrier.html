@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Calendier GIF</title>
+	<link th:href="@{'/style/commun.css'}" rel="stylesheet">
+<!--	On importe le style correspondant au thème choisi par l'utilisateur -->
+	<link th:href="@{'/style/' +${session?.utilisateur?.theme?.nom?.toLowerCase()}+'.css'}" rel="stylesheet">
+</head>
+
+<body>
+<!--	Le fragment Thymeleaf ci-dessous  affiche la bannière du site -->
+	<div th:insert="header.html :: header_body"></div>
+	<h1>Calendrier</h1>
+	<h2
+		th:text="'Utilisateur : ' + ${session?.utilisateur?.prenom} + ' - solde : ' + ${session?.utilisateur?.nbPoints}">
+		<a href="calendrier/deconnexion">Déconnexion</a>
+	</h2>
+	<!-- Table html un peu longue. On fait attention que le compte des cellules
+	     soit bon : dans chaque ligne il faut 4 cellules 
+	-->
+	<div class="tableContainer">
+		<table id="calendrier">
+			<tr>
+				 <!-- Quatre cellules dans cette première ligne -->
+				<td>Jour</td>
+				<td>Gif</td>
+				<td>Utilisateur</td>
+				<td>Réaction(s)</td>
+			</tr>
+			<!-- Boucle Thymeleaf qui affiche une ligne de la table à chaque itération de la boucle -->
+			<tr th:each="jour: ${pageDeJours?.content}">
+				<!-- Cellule 1 sur 4 -->
+				<!-- On utilise #temporals.format
+				     TODO : Comprendre pourquoi #dates.format ne marche pas
+				-->
+				<td th:text="${#temporals.format(jour?.date,'dd-MM-yy')}"></td>
+				<!-- Premier grand bloc th-if, si le jour n'a pas de gif -->
+				<th:block th:if="${jour?.gif == null }">
+					<!-- Cellule 2 sur 4, quand le jour n'a pas de gif -->
+					<td>
+						<!-- Quand le jour n'a pas de gif, on propose à l'utilisateur
+							des liens pour téléverser/placer un gif distant
+				            en commençant par renseigner le nombre de points
+							restant, qui détermine la possibilité de poster un gif ou pas
+				         --> 
+						<span th:text="${jour?.nbPoints} + ' points'"></span><br>
+						<a th:href="@{'calendrier/placerGifDistant?ID_JOUR=' + ${jour?.date}}">Placer un Gif
+							distant</a><br>
+						<a th:href="@{'calendrier/televerserGif?ID_JOUR=' + ${jour?.date}}">Téléverser un Gif</a>
+					</td>
+					<!-- Cellule 3 sur 4, quand le jour n'a pas de gif -->
+					<td></td>
+					<!-- Cellule 4 sur 4, quand le jour n'a pas de gif -->
+					<td></td>
+				</th:block>
+
+				<!-- Second grand bloc th-if, si le jour a un gif -->
+				<th:block th:if="${jour?.gif != null }">
+					<!-- Cellule 2 sur 4, quand le jour a un  gif -->
+					<td>
+						<!--Présentation de toutes les infos sur le  gif -->
+						<h2 th:text="${jour?.gif?.legende}"></h2>
+						<!-- Le code est différent suivant
+						    que le gif est téléversé ou distant.
+							D'où les deux th:if à la suite
+						-->
+						<div class="gifContainer " th:if="${jour?.gif?.getClass()?.simpleName=='GifDistant' }"><img
+								th:src="${jour.gif.url}" height="200" width="200"></div>
+						<div class="gifContainer" th:if="${jour?.gif?.getClass()?.simpleName=='GifTeleverse' }"><img
+								th:src="@{'/images/' +${jour.gif.id}+'.gif'}" height="200" width="200"></div>
+
+					</td>
+					<!-- Cellule 3 sur 4, quand le jour a un  gif -->
+					<td th:text="'Posté par ' + ${jour?.gif?.utilisateur?.prenom}">
+					</td>
+					<!-- Cellule 4 sur 4, quand le jour a un  gif -->
+					<td>
+						<!-- Lien proposé à l'utilisateur pour réagir -->
+						<a th:href="@{'calendrier/reagir?ID_GIF=' + ${jour?.gif?.id}}" th:text="'Réagir'"></a>
+						<!-- Présentation des réactions passées -->
+						<span th:each="reaction:${jour?.gif?.reactions}">
+							<span th:utext="${reaction?.emotion?.code}"></span>
+							<span th:text="' ' + ${reaction?.utilisateur?.prenom}"></span> <br>
+						</span>
+					</td>
+			</tr>
+
+		</table>
+	</div>
+	<h2>
+
+		<!-- Affiche le numéro de la page, grâce à un th:text -->
+		Page <span th:text="${pageDeJours?.getNumber()+1}"></span> :
+		<!-- Affiche l'intervalle des jours dans la page, grâce à plusieurs th:text -->
+		jours
+		<span th:text="${pageDeJours?.totalElements == 0 ? 0 : pageDeJours?.size * pageDeJours?.number+1}"></span>
+		à <span th:text="${pageDeJours?.numberOfElements + pageDeJours?.size * pageDeJours?.number}"></span> sur <span
+			th:text="${pageDeJours?.totalElements}"></span> jours
+		<div>
+	    <!-- Affiche des liens-flèches pour la navigation inter-pages, grâce à th:href
+		      qui permet de recharger la page avec des paramètres GET différents dans l'URL
+		-->
+				
+		<div class="pagination" th:if="${!pageDeJours?.isFirst()}">
+			<a th:href="@{'calendrier?page=0'}">&#x23EE;</a>
+			<a th:href="@{'calendrier?page=' + ${pageDeJours?.number-1}}">&#x23EA;</a>
+		</div>
+		<div class="pagination "th:if="${!pageDeJours.last}">
+			<a th:href="@{'calendrier?page=' + ${pageDeJours?.number+1}}">&#x23E9;</a>
+			<a th:href="@{'calendrier?page=' +${pageDeJours?.totalPages - 1}}">&#x23ED;</a>
+		</div>
+		</div>
+	</h2>
+	 <!-- Lien pour afficher la page au format PDF :
+		 le th:href permet de renvoyer vers une méthode du controleur,
+		 celle qui est annotée @GetMapping("calendrierExport")
+		-->
+	<a class="export" th:href="@{'calendrierExport?jours=' +${pageDeJours?.number}}">
+		Exporter le calendrier en PDF
+	</a>
+</body>
+
+</html>

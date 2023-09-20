@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Calendrier Gif</title>
+	<link th:href="@{'/style/commun.css'}" rel="stylesheet">
+	<link th:href="@{/style/accueil.css}" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- Le fragment Thymeleaf ci-dessous  importe la bannière du site 
+    et montre les éventuelles notifications
+    -->
+    <div th:insert="header.html :: header_body"></div>
+    <!-- Formulaire de connexion -->
+    <div class="formContainer">
+        <form class="blue-form" action="login" method="post">
+            <input type="text" name="username" placeHolder="username" required><br>
+            <input type="password" name="password" placeHolder="Mot de Passe" required><br>
+            <button type="submit">Se connecter</button>
+        </form>
+    </div>
+    <h2 class="inscription"><a href="inscription">S'inscrire</a></h2>
+    <h2>Utilisateurs ayant réagi au moins 5 fois</h2>
+    <!-- Statistiques avec affiche différent si liste vide. D'où le th:if -->
+    <p th:if =${utilisateurs.isEmpty()} th:text="Aucun"></p>
+    <ul th:each="utilisateur : ${utilisateurs}">
+            <li th:text="${utilisateur?.prenom}"></li>
+    </ul>
+    <!-- Statistiques avec une boucle Thymeleaf -->
+    <h2>Nb d'inscrits par année et par mois</h2>
+    <div class="nbInscritsContainer">
+        <div th:each="nbInscrit: ${nbInscrits}">
+            <div th:text="${nbInscrit?.annee} + '/' + ${nbInscrit?.mois} +':'+ ${nbInscrit?.nbInscrits}"></div>
+        </div>
+    </div>
+    <p th:text="'nombre total d\'inscrits: ' +${nbTotalInscrits}"></p>
+    <br>
+
+</body>
+
+
+</html>

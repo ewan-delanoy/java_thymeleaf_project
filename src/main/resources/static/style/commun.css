@@ -1,0 +1,165 @@
+@charset "UTF-8";
+
+body {
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden;
+}
+
+header {
+	display: flex;
+	width: 100vw;
+	height: 22.5vh;
+	align-items: center;
+	justify-content: center;
+}
+
+.erreur {
+	color: red;
+	background-color: white;
+}
+
+h1 {
+	color: rgb(0, 128, 255);
+	text-align: center;
+}
+
+.blue-form {
+	background-color: blue;
+	width: 50%;
+	padding: 20px;
+	border-radius: 20px;
+
+}
+
+
+.blue-form input {
+	width: 50%;
+	padding: 10px;
+	margin-bottom: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+.blue-form button {
+	background-color: yellow;
+
+	color: black;
+
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: 0.3s;
+	margin-top: 10px;
+}
+
+
+.blue-form button:hover {
+	transform: scale(1.1);
+
+}
+
+form {
+	margin-top: 100px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.inscription {
+	text-align: center;
+}
+
+.formContainer {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.title {
+	font-size: 120px;
+}
+
+button {
+
+	border: 1px solid #007bff;
+}
+
+.fondCyan {
+	background-color: rgb(0, 128, 255);
+	position: absolute;
+	top: 88px;
+	left: 0px;
+	width: 100vw;
+	height: 40.5vh;
+	z-index: -1;
+}
+
+p,
+h2,
+ul {
+	text-align: center;
+}
+
+.nbInscritsContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+table,
+th,
+td {
+	border: 1px solid blue;
+	border-radius: 5px;
+}
+
+.tableContainer {
+	display: flex;
+	justify-content: center;
+}
+
+.gifContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+
+}
+
+td {
+	vertical-align: middle;
+	text-align: center;
+}
+
+table {
+	background-color: black;
+}
+
+.export {
+	text-align: center;
+}
+
+.exportContainer {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.emotionContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+}
+
+.emotion {
+	font-size: 80px;
+}
+
+.pagination {
+	display: inline-block;
+}

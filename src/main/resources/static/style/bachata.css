@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+body {
+    font-family: "Courier";    
+}
+
+a {
+    color: #20272f;
+}
+
+label {
+    display: block;
+    width: 210px;
+    float: left;
+    font-family: "Courier";
+}
+
+input[type="text"] {
+    width: 200px;
+    font-family: "Courier";
+}
+
+input[type="submit"] {
+    width: 100px;
+    font-family: "Courier";
+}
+
+select {
+    width: 206px;
+    font-family: "Courier";
+}
+
+#calendrier {
+    width: 70%;    
+}
+
+.erreur {
+    color: red;
+}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link th:href="@{'/style/commun.css'}" rel="stylesheet">
+</head>
+<body>
+<div th:fragment="header_body">
+<!-- Image qui servira de bannière pour le site -->
+<header th:style="'background-image:url(\'../images/accueil_gifs.png\'); background-repeat: no-repeat; background-size: cover;'">
+<h1>Calendrier Gif</h1>
+<!-- Proposer la déconnexion  -->
+<form th:if="${session?.utilisateur ne null}" class="deconnexion" th:action="@{/logout}" method="post">
+            <button type="submit">Deconnexion</button>
+        </form>
+</header>
+<!-- TODO : utiliser des notifications  -->
+<h2 th:text="${param.notification}"> </h2>
+</div>
+</body>
+</html>
